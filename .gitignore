@@ -116,3 +116,5 @@ GitHub.sublime-settings
 .history
 
 .idea/
+node_modules
+
