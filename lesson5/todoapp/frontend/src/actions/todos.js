@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { createMessage } from './messages';
+import { createMessage, returnErrors } from './messages';
 import { GET_TODO_LIST, ADD_TODO, DELETE_TODO, TOGGLE_TODO, GET_ERRORS } from '../actions/types';
 
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
@@ -13,7 +13,7 @@ export const getTodos = () => dispatch => {
                 type: GET_TODO_LIST,
                 payload: result.data
             });
-        }).catch(error => console.log(error));
+        }).catch(error => dispatch(returnErrors(error.response.data, error.response.status)));
 };
 
 //Delete todo
@@ -49,14 +49,5 @@ export const addTodo = (todo) => dispatch => {
                 type: ADD_TODO,
                 payload: result.data
             });
-        }).catch(error => {
-            const errors = {
-                msg: error.response.data,
-                status: error.response.status
-            }
-            dispatch({
-                type: GET_ERRORS,
-                payload: errors
-            });
-        });
+        }).catch(error => dispatch(returnErrors(error.response.data, error.response.status)));
 };
